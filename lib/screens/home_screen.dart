@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Text('Welcome to Home Screen!'),
+        child: Text('Hola mundo!'),
       ),
     );
   }

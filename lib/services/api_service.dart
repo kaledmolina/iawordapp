@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiService {
-  final String baseUrl = 'http://your-laravel-api.com/api';
+  final String baseUrl = 'https://apiv1.soldadurasherrerotierralta.com/api';
   final storage = FlutterSecureStorage();
   late Dio _dio;
 
@@ -10,6 +10,9 @@ class ApiService {
     _dio = Dio(BaseOptions(
       baseUrl: baseUrl,
       headers: {'Accept': 'application/json'},
+      validateStatus: (status) {
+        return status! < 500;
+      },
     ));
 
     _dio.interceptors.add(InterceptorsWrapper(
@@ -24,35 +27,41 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>?> login(String email, String password) async {
-    try {
-      final response = await _dio.post('/login', data: {
-        'email': email,
-        'password': password,
-      });
-      return response.data;
-    } catch (e) {
-      rethrow;
+    final response = await _dio.post('/login', data: {
+      'email': email,
+      'password': password,
+    });
+    
+    if (response.statusCode == 422) {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.badResponse,
+      );
     }
+    
+    return response.data;
   }
 
   Future<Map<String, dynamic>?> register(String name, String email, String password) async {
-    try {
-      final response = await _dio.post('/register', data: {
-        'name': name,
-        'email': email,
-        'password': password,
-      });
-      return response.data;
-    } catch (e) {
-      rethrow;
+    final response = await _dio.post('/register', data: {
+      'name': name,
+      'email': email,
+      'password': password,
+    });
+    
+    if (response.statusCode == 422) {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.badResponse,
+      );
     }
+    
+    return response.data;
   }
 
   Future<void> logout() async {
-    try {
-      await _dio.post('/logout');
-    } catch (e) {
-      rethrow;
-    }
+    await _dio.post('/logout');
   }
 }
