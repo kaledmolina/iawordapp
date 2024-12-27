@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../models/word.dart';
+
 
 class ApiService {
   final String baseUrl = 'https://apiv1.soldadurasherrerotierralta.com/api';
@@ -63,5 +65,20 @@ class ApiService {
 
   Future<void> logout() async {
     await _dio.post('/logout');
+  }
+  Future<Word> getNextWord() async {
+    final response = await _dio.get('/english-verbs/next-word');
+    if (response.statusCode == 200) {
+      return Word.fromJson(response.data['word']);
+    }
+    throw DioException(
+      requestOptions: response.requestOptions,
+      response: response,
+      type: DioExceptionType.badResponse,
+    );
+  }
+
+  Future<void> markWordAsLearned(int wordId) async {
+    await _dio.post('/english-verbs/$wordId/mark-learned');
   }
 }

@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'routes/app_routes.dart';
+import 'services/api_service.dart';
+import 'screens/login_screen.dart';
+import 'screens/register_screen.dart';
+import 'screens/home_screen.dart';
 import 'controllers/auth_controller.dart';
 
-void main() async {
-  await GetStorage.init();
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Inicializar servicios
+  Get.put(ApiService());
+  Get.put(AuthController());
+
   runApp(MyApp());
 }
 
@@ -14,12 +20,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Auth App',
+      title: 'English Learning App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: AppRoutes.INITIAL,
-      getPages: AppRoutes.routes,
+      initialRoute: '/login',
+      getPages: [
+        GetPage(name: '/login', page: () => LoginScreen()),
+        GetPage(name: '/register', page: () => RegisterScreen()),
+        GetPage(name: '/home', page: () => HomeScreen()),
+      ],
+      defaultTransition: Transition.fade,
     );
   }
 }
