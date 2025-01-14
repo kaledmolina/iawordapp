@@ -4,7 +4,7 @@ import '../services/api_service.dart';
 import 'package:dio/dio.dart';
 
 class AuthController extends GetxController {
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   final ApiService apiService = ApiService();
   var isLoading = false.obs;
   var isLoggedIn = false.obs;
@@ -37,7 +37,7 @@ class AuthController extends GetxController {
           'Error de validación',
           _formatErrors(errors),
           snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 5),
+          duration: const Duration(seconds: 5),
         );
       } else {
         Get.snackbar(
@@ -70,7 +70,7 @@ class AuthController extends GetxController {
           'Error de validación',
           _formatErrors(errors),
           snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 5),
+          duration: const Duration(seconds: 5),
         );
       } else {
         Get.snackbar(

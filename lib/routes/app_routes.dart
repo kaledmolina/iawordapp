@@ -5,22 +5,22 @@ import '../screens/home_screen.dart';
 import '../middlewares/auth_middleware.dart';
 
 class AppRoutes {
-  static const String INITIAL = '/login';
-  static const String LOGIN = '/login';
-  static const String REGISTER = '/register';
-  static const String HOME = '/home';
+  static const String initial = '/login';
+  static const String login = '/login';
+  static const String register = '/register';
+  static const String home = '/home';
 
   static final routes = [
     GetPage(
-      name: LOGIN,
+      name: login,
       page: () => LoginScreen(),
     ),
     GetPage(
-      name: REGISTER,
+      name: register,
       page: () => RegisterScreen(),
     ),
     GetPage(
-      name: HOME,
+      name: home,
       page: () => HomeScreen(),
       middlewares: [AuthMiddleware()],
     ),
