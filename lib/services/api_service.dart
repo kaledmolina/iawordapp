@@ -2,10 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/word.dart';
 
-
 class ApiService {
   final String baseUrl = 'https://apiv1.soldadurasherrerotierralta.com/api';
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   late Dio _dio;
 
   ApiService() {
@@ -33,7 +32,7 @@ class ApiService {
       'email': email,
       'password': password,
     });
-    
+
     if (response.statusCode == 422) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -41,17 +40,18 @@ class ApiService {
         type: DioExceptionType.badResponse,
       );
     }
-    
+
     return response.data;
   }
 
-  Future<Map<String, dynamic>?> register(String name, String email, String password) async {
+  Future<Map<String, dynamic>?> register(
+      String name, String email, String password) async {
     final response = await _dio.post('/register', data: {
       'name': name,
       'email': email,
       'password': password,
     });
-    
+
     if (response.statusCode == 422) {
       throw DioException(
         requestOptions: response.requestOptions,
@@ -59,13 +59,14 @@ class ApiService {
         type: DioExceptionType.badResponse,
       );
     }
-    
+
     return response.data;
   }
 
   Future<void> logout() async {
     await _dio.post('/logout');
   }
+
   Future<Word> getNextWord() async {
     final response = await _dio.get('/english-verbs/next-word');
     if (response.statusCode == 200) {
